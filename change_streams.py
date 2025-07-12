@@ -65,7 +65,7 @@ async def process_change(change):
 # <----------------- USER ---------------------->
 
 async def insert_user_document(user):
-    logger.info(f"Processing INSERT user {user["_id"]}")
+    logger.info(f"Processing INSERT user {user['_id']}")
     doc = await get_user_document(user)
     await insert_user_documents(doc)
 
