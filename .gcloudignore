@@ -1,0 +1,9 @@
+.git/
+.github/
+.vscode/
+.env.example
+.python-version
+README.md
+Dockerfile
+cloudbuild.yaml
+.gitignore
