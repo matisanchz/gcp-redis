@@ -7,7 +7,7 @@ mongo_client = settings.MONGO_CLIENT
 
 logger = logging.getLogger(__name__)
 
-def get_athlete_users():
+async def get_athlete_users():
     "Get all athlete users"
     try:
         logger.info(f'Getting users')
@@ -47,7 +47,7 @@ def get_athlete_users():
         logger.error(f"Error getting users: {e}")
         raise e
     
-def get_campaigns():
+async def get_campaigns():
     "Get all campaigns"
     try:
         logger.info(f'Getting campaigns')
@@ -74,7 +74,7 @@ def get_campaigns():
         logger.error(f"Error getting campaigns: {e}")
         raise e
 
-def get_subtasks_by_user_id(user_id):
+async def get_subtasks_by_user_id(user_id):
     "Get all subtasks by user"
     try:
         logger.info(f'Getting subtasks')
@@ -88,7 +88,7 @@ def get_subtasks_by_user_id(user_id):
         logger.error(f"Error getting user metadata: {e}")
         raise e
 
-def get_user_metadata(user_id):
+async def get_user_metadata(user_id):
     "Get user metadata by user_id"
     try:
         logger.info(f'Getting user metadata for {user_id}')
@@ -107,7 +107,7 @@ def get_user_metadata(user_id):
         logger.error(f"Error getting user metadata: {e}")
         raise e
 
-def get_organization_name(organization_id):
+async def get_organization_name(organization_id):
     "Get organization name by id"
     try:
         logger.info(f'Getting organization name for organization_id {organization_id}')
@@ -131,7 +131,7 @@ def get_organization_name(organization_id):
         logger.error(f"Error getting user metadata: {e}")
         raise e
     
-def get_tasks_by_campaign_id(campaign_id):
+async def get_tasks_by_campaign_id(campaign_id):
     "Get all campaign tasks"
     try:
         logger.info(f'Getting tasks for campaign {campaign_id}')
@@ -168,7 +168,7 @@ def get_tasks_by_campaign_id(campaign_id):
         logger.error(f"Error getting tasks for campaign {campaign_id}: {e}")
         raise e
     
-def get_campaign_by_id(campaign_id):
+async def get_campaign_by_id(campaign_id):
     "Get campaign by id"
     try:
         logger.info(f'Getting campaign')
@@ -182,7 +182,7 @@ def get_campaign_by_id(campaign_id):
         logger.error(f"Error getting user metadata: {e}")
         raise e
     
-def get_user_by_id(user_id):
+async def get_user_by_id(user_id):
     "Get user by id"
     try:
         db = mongo_client.get_database('users')

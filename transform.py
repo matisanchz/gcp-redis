@@ -4,10 +4,10 @@ from extract import *
 
 logger = logging.getLogger(__name__)
 
-def get_user_document(user):
-    user_metadata = get_user_metadata(user["_id"])
+async def get_user_document(user):
+    user_metadata = await get_user_metadata(user["_id"])
 
-    organization = get_organization_name(user["organizationId"])
+    organization = await get_organization_name(user["organizationId"])
     
     # Concat all user information
     user_data = user | user_metadata[0] | organization[0]
@@ -32,8 +32,8 @@ def get_user_document(user):
 
     return doc
 
-def get_campaign_document(campaign):
-    tasks = get_tasks_by_campaign_id(campaign["_id"])
+async def get_campaign_document(campaign):
+    tasks = await get_tasks_by_campaign_id(campaign["_id"])
     campaign_id = str(campaign["_id"])
     campaign.pop("_id")
     content = "Campaign data: \n"
@@ -59,8 +59,8 @@ def get_campaign_document(campaign):
     )
     return doc
 
-def get_athlete_subtask_document(user):
-    subtasks = get_subtasks_by_user_id(str(user["_id"]))
+async def get_athlete_subtask_document(user):
+    subtasks = await get_subtasks_by_user_id(str(user["_id"]))
     if subtasks:
         content = ""
         for subtask in subtasks:

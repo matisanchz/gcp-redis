@@ -25,30 +25,30 @@ subtask_vectorstore = RedisVectorStore(
         index_name=settings.REDIS_SUBTASK_INDEX
 )
 
-def insert_user_documents(documents):
+async def insert_user_documents(documents):
 
-    athlete_vectorstore.add_documents(
+    athlete_vectorstore.aadd_documents(
         documents=documents
     )
 
     logger.info(f"Inserted documents for users: {[d.metadata.get('user_id') for d in documents]}")
 
-def insert_campaign_documents(documents):
+async def insert_campaign_documents(documents):
         
-    campaign_vectorstore.add_documents(
+    campaign_vectorstore.aadd_documents(
         documents=documents
     )
     logger.info(f"Inserted documents for campaigns: {[d.metadata.get('campaign_id') for d in documents]}")
 
-def insert_athlete_subtask_document(document):
-    subtask_vectorstore.add_documents(
+async def insert_athlete_subtask_document(document):
+    subtask_vectorstore.aadd_documents(
         documents=[document]
     )
     logger.info(f"Inserted subtasks for user: {document.metadata.get('user_id')}")
 
 async def delete_user_document(user_id):
     # Delete User Index
-    await athlete_vectorstore.adelete(
+    athlete_vectorstore.adelete(
         ids=None,
         filter={"user_id": user_id}
     )
@@ -56,14 +56,14 @@ async def delete_user_document(user_id):
 
 async def delete_campaign_document(campaign_id):
     # Delete Campaign Index
-    await campaign_vectorstore.adelete(
+    campaign_vectorstore.adelete(
         ids=None,
         filter={"campaign_id": campaign_id}
     )
 
 async def delete_athlete_subtask_document(user_id):
     # Delete Athlete Subtask Index
-    await subtask_vectorstore.adelete(
+    subtask_vectorstore.adelete(
         ids=None,
         filter={"user_id": user_id}
     )

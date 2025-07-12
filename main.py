@@ -14,7 +14,7 @@ mongo_client = settings.MONGO_CLIENT
 db_watcher_threads = []
 
 @functions_framework.http
-def main(request: Request):
+async def main(request: Request):
     """
     HTTP Cloud Function to execure the ETL Redis process.
     """
@@ -23,7 +23,7 @@ def main(request: Request):
         if request.path == "/redis-etl":
             logger.info("Starting Redis ETL process from main function...")
             try:
-                etl()
+                await etl()
                 logger.info(f"ETL sucessfully completed")
                 return {"message": "ETL process finished successfully."}, 200
             except Exception as e:
