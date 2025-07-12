@@ -60,7 +60,7 @@ async def get_campaign_document(campaign):
     return doc
 
 async def get_athlete_subtask_document(user):
-    subtasks = await get_subtasks_by_user_id(str(user["_id"]))
+    subtasks = await get_subtasks_by_user_id(user["_id"])
     if subtasks:
         content = ""
         for subtask in subtasks:

@@ -77,12 +77,17 @@ async def get_campaigns():
 async def get_subtasks_by_user_id(user_id):
     "Get all subtasks by user"
     try:
-        logger.info(f'Getting subtasks')
+        logger.info("Getting subtasks")
         db = mongo_client.get_database('campaigns')
         subtasks_collection = db['subtasks']
 
         subtasks = list(subtasks_collection.find({"athleteId": user_id}, {"_id": 0, "createdAt": 0, "updatedAt": 0, "__v": 0}))
         
+        if subtasks:
+            logger.info(f'Subtasks found for user {user_id}')
+        else:
+            logger.info(f'No subtasks found for user {user_id}')
+
         return subtasks
     except Exception as e:
         logger.error(f"Error getting user metadata: {e}")
