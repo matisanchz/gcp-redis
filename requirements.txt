@@ -1,0 +1,6 @@
+functions-framework==3.*
+langchain==0.3.25
+langchain-google-genai==2.0.1
+langchain_redis==0.2.3
+pymongo==4.5.0
+python-dotenv==1.0.0

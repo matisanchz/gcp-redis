@@ -1,0 +1,46 @@
+steps:
+  - id: "Building container image"
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/gcp-redis/$_SERVICE_NAME:$SHORT_SHA",
+        ".",
+      ]
+    env:
+      - "DOCKER_BUILDKIT=1"
+
+  - id: "Registering container..."
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/gcp-redis/$_SERVICE_NAME:$SHORT_SHA",
+      ]
+  - id: "Deploy Cloud Function"
+    name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "functions",
+        "deploy",
+        "$_SERVICE_NAME",
+        "--gen2",
+        "--runtime=python310",
+        "--region",
+        "us-central1",
+        "--entry-point",
+        "main",
+        "--memory=1GB",
+        "--allow-unauthenticated",
+        "--timeout=120",
+        '--set-secrets',
+        'MONGO_URI=$_MONGO_URI,GEMINI_API_KEY=$_GEMINI_API_KEY,REDIS_URL=$_REDIS_URL',
+        "--trigger-http",
+        "--image",
+        "us-central1-docker.pkg.dev/$PROJECT_ID/gcp-redis/$_SERVICE_NAME:$SHORT_SHA",
+      ]
+
+options:
+  logging: "CLOUD_LOGGING_ONLY"
