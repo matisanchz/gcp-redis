@@ -28,7 +28,7 @@ async def main(request: Request):
                 return {"message": "ETL process finished successfully."}, 200
             except Exception as e:
                 logger.error(f"Error during ETL process: {e}")
-                raise e
+                return {"error": f"ETL process failed: {e}"}, 500
         elif request.path == "/change-streams":
             try:
                 global db_watcher_threads
@@ -50,7 +50,7 @@ async def main(request: Request):
                 return "Background MongoDB Change Stream listeners initialized.", 200
             except Exception as e:
                 logger.error(f"An unexpected error occurred in Cloud Function: {e}")
-                return {"error": str(e)}, 500
+                return {"error": f"Change Stream process failed: {e}"}, 500
         return "Invalid endpoint", 404
     except Exception as e:
         logger.error(f"An unexpected error occurred in Cloud Function: {e}")
