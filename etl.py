@@ -6,18 +6,20 @@ from load import *
 logger = logging.getLogger(__name__)
 
 async def bulk_insert_user_documents(users):
-    documents = []
+    user_documents = []
+    subtask_documents = []
     n = 1
     for user in users:
         logger.info(f"Processing user {n} - {user['_id']}")
-        document = await get_user_document(user)
-        documents.append(document)
+        user_document = await get_user_document(user)
+        user_documents.append(user_document)
         subtask_document = await get_athlete_subtask_document(user)
         if subtask_document:
-            await insert_athlete_subtask_document(subtask_document)
+            subtask_documents.append(subtask_document)
         n+=1
     
-    await insert_user_documents(documents)
+    await insert_user_documents(user_documents)
+    await insert_athlete_subtask_documents(subtask_document)
 
 async def bulk_insert_campaign_documents(campaigns):
     documents = []

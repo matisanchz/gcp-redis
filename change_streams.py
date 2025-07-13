@@ -114,4 +114,5 @@ async def delete_subtask_document(user_id):
 async def update_athlete_subtask_document(user):
     logger.info(f"Re-indexing subtasks document for user_id: {str(user['_id'])}")
     await delete_athlete_subtask_document(str(user["_id"]))
-    await insert_athlete_subtask_document(user)
+    document = await get_athlete_subtask_document(user)
+    await insert_athlete_subtask_documents([document])

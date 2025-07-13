@@ -30,21 +30,20 @@ async def insert_user_documents(documents):
     await athlete_vectorstore.aadd_documents(
         documents=documents
     )
-
-    logger.info(f"Inserted documents for users: {[d.metadata.get('user_id') for d in documents]}")
+    logger.info(f"Inserted {len(documents)} documents for users: {[d.metadata.get('user_id') for d in documents]}")
 
 async def insert_campaign_documents(documents):
         
     await campaign_vectorstore.aadd_documents(
         documents=documents
     )
-    logger.info(f"Inserted documents for campaigns: {[d.metadata.get('campaign_id') for d in documents]}")
+    logger.info(f"Inserted {len(documents)} documents for campaigns: {[d.metadata.get('campaign_id') for d in documents]}")
 
-async def insert_athlete_subtask_document(document):
+async def insert_athlete_subtask_documents(documents):
     await subtask_vectorstore.aadd_documents(
-        documents=[document]
+        documents=documents
     )
-    logger.info(f"Inserted subtasks for user: {document.metadata.get('user_id')}")
+    logger.info(f"Inserted {len(documents)} subtasks documents for users: {[d.metadata.get('user_id') for d in documents]}")
 
 async def delete_user_document(user_id):
     # Delete User Index
