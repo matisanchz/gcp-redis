@@ -12,9 +12,9 @@ async def bulk_insert_user_documents(users):
         logger.info(f"Processing user {n} - {user['_id']}")
         document = await get_user_document(user)
         documents.append(document)
-        subtask_document = await get_athlete_subtask_document(user)
+        """subtask_document = await get_athlete_subtask_document(user)
         if subtask_document:
-            await insert_athlete_subtask_document(subtask_document)
+            await insert_athlete_subtask_document(subtask_document)"""
         n+=1
     
     await insert_user_documents(documents)
