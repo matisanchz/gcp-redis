@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 async def get_athlete_users():
     "Get all athlete users"
     try:
-        logger.info(f'Getting users')
+        logger.info('Getting users')
         db = mongo_client.get_database('users')
         user_collection = db['users']
 
@@ -50,7 +50,7 @@ async def get_athlete_users():
 async def get_campaigns():
     "Get all campaigns"
     try:
-        logger.info(f'Getting campaigns')
+        logger.info('Getting campaigns')
         db = mongo_client.get_database('campaigns')
         campaign_collection = db['campaigns']
 
@@ -176,7 +176,7 @@ async def get_tasks_by_campaign_id(campaign_id):
 async def get_campaign_by_id(campaign_id):
     "Get campaign by id"
     try:
-        logger.info(f'Getting campaign')
+        logger.info('Getting campaign')
         db = mongo_client.get_database('campaigns')
         campaigns_collection = db['campaigns']
 

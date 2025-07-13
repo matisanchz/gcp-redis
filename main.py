@@ -29,8 +29,7 @@ def main(request: Request):
                     daemon=True
                 )
                 etl_thread.start()
-                logger.info(f"ETL sucessfully completed")
-                return {"message": "ETL process finished successfully."}, 200
+                return {"message": "ETL process started."}, 200
             except Exception as e:
                 logger.error(f"Error during ETL process: {e}")
                 return {"error": f"ETL process failed: {e}"}, 500

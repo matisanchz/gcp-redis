@@ -8,18 +8,22 @@ async def get_user_document(user):
     user_metadata = await get_user_metadata(user["_id"])
 
     organization = await get_organization_name(user["organizationId"])
-    
-    # Concat all user information
-    user_data = user | user_metadata[0] | organization[0]
+
+    # Organize information in batchs
+    content = "User Basic Information:\n"
 
     # Delete unnecesary fields
-    user_data.pop("_id")
-    user_data.pop("organizationId")
+    user.pop("_id")
+    user.pop("organizationId")
 
-    content = ""
+    for key, value in user.items():
+        content += f"{key}: {value}.\n"
+    
+    content += "User Extra Information:\n"
+    for key, value in user_metadata[0].items():
+        content += f"{key}: {value}.\n"
 
-    for key, value in user_data.items():
-        content += f"{key}: {value}. "
+    content += f"User Organization Name: {organization[0]}"
 
     doc = Document(
         page_content=content,
