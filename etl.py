@@ -38,7 +38,7 @@ async def etl_users():
         await bulk_insert_user_documents(users)
         logger.info("ETL Completed for collections users/useridentities/subtasks")
     except Exception as e:
-        logger.error(f'Error embedding documents')
+        logger.error(f'Users ETL process failed: {e}')
         return {"error": f"Users ETL process failed: {e}"}, 500
 
 async def etl_campaigns():
@@ -48,14 +48,14 @@ async def etl_campaigns():
         await bulk_insert_campaign_documents(campaigns)
         logger.info("ETL Completed for collections campaigns/tasks")
     except Exception as e:
-        logger.error(f'Error embedding documents')
+        logger.error(f'Campaigns ETL process failed: {e}')
         return {"error": f"Campaigns ETL process failed: {e}"}, 500
 
 async def etl():
     try:
         await etl_users()
-        await etl_campaigns()
+        #await etl_campaigns()
         logger.info(f"ETL sucessfully completed")
     except Exception as e:
-        logger.error(f'Error embedding documents')
+        logger.error(f'ETL process failed: {e}')
         return {"error": f"ETL process failed: {e}"}, 500

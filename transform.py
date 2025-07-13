@@ -13,17 +13,18 @@ async def get_user_document(user):
     content = "User Basic Information:\n"
 
     # Delete unnecesary fields
-    user.pop("_id")
-    user.pop("organizationId")
+    user_data = user.copy()
+    user_data.pop("_id")
+    user_data.pop("organizationId")
 
-    for key, value in user.items():
+    for key, value in user_data.items():
         content += f"{key}: {value}.\n"
     
-    content += "User Extra Information:\n"
+    content += "\nUser Extra Information:\n"
     for key, value in user_metadata[0].items():
         content += f"{key}: {value}.\n"
 
-    content += f"User Organization Name: {organization[0]}"
+    content += f"\nUser Organization Name: {organization}"
 
     doc = Document(
         page_content=content,

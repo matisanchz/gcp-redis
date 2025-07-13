@@ -122,16 +122,16 @@ async def get_organization_name(organization_id):
 
             pipeline = [
                 {"$match": {"_id": ObjectId(organization_id)}},
-                {"$project": {"_id": 0, "organizationName": "$name"}}
+                {"$project": {"_id": 0, "name": 1}}
             ]
 
             result = list(organization_collection.aggregate(pipeline))
 
             if result:
                 logger.info(f'Organization found')
-                return result
+                return result[0]["name"]
         # Some of the persisted users don't contain 24-character hex in the organization_id
-        return [{"organizationName": organization_id}]
+        return organization_id
     except Exception as e:
         logger.error(f"Error getting user metadata: {e}")
         raise e
