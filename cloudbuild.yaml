@@ -34,7 +34,7 @@ steps:
         "main",
         "--memory=1GB",
         "--allow-unauthenticated",
-        "--timeout=120",
+        "--timeout=3600",
         '--set-env-vars',
         'MONGO_URI=$_MONGO_URI,GEMINI_API_KEY=$_GEMINI_API_KEY,REDIS_URL=$_REDIS_URL',
         "--trigger-http",
