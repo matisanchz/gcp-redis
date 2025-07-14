@@ -203,7 +203,7 @@ async def get_updated_task_document(task, insert: bool = False):
     return doc
 
 async def get_athlete_subtask_document(user):
-    subtasks = await get_subtasks_by_user_id(str(user["_id"]))
+    subtasks = await get_subtasks_by_user_id(user["_id"])
     if subtasks:
         content = ""
         for subtask in subtasks:
@@ -233,10 +233,11 @@ async def get_updated_subtask_document(subtask, insert: bool = False):
         new_content += old_document.page_content
         new_content += "Subtask: \n"
         for key, value in subtask.items():
-            new_content += f"{key}: {value}.\n"
+            if key not in ["_id", "createdAt", "updatedAt", "__v"]:
+                new_content += f"{key}: {value}.\n"
         new_content += "\n"
     else:
-        subtasks = await get_subtasks_by_user_id(str(subtask["athleteId"]))
+        subtasks = await get_subtasks_by_user_id(subtask["athleteId"])
         if subtasks:
             for subtask in subtasks:
                 new_content += "Subtask: \n"
