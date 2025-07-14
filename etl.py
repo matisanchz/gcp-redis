@@ -17,7 +17,7 @@ async def bulk_insert_user_documents(users):
         if subtask_document:
             subtask_documents.append(subtask_document)
         n+=1
-    
+
     await insert_user_documents(user_documents)
     await insert_athlete_subtask_documents(subtask_documents)
 
@@ -56,7 +56,7 @@ async def etl_campaigns():
 async def etl():
     try:
         await etl_users()
-        await etl_campaigns()
+        #await etl_campaigns()
         logger.info(f"ETL sucessfully completed")
     except Exception as e:
         logger.error(f'ETL process failed: {e}')

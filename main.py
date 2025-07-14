@@ -68,8 +68,8 @@ async def watch_single_database(db_name):
     logger.info(f"Start watching collections for db {db_name}...")
     try:
         db = mongo_client.get_database(db_name)
-        with db.watch(full_document='updateLookup') as stream:
-            loop = asyncio.get_running_loop()
+        with db.watch(full_document='updateLookup', full_document_before_change="required") as stream:
+            asyncio.get_running_loop()
             for change in stream:
                 await process_change(change)
         logger.info(f"Ending {db_name} listening...")
