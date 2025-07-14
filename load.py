@@ -61,15 +61,17 @@ async def insert_campaign_documents(documents):
     ids = [d.metadata.get('campaign_id') for d in documents]
         
     await campaign_vectorstore.aadd_documents(
-        documents=documents
+        documents=documents,
+        ids=ids
     )
     logger.info(f"Inserted {len(documents)} documents for campaigns: {ids}")
 
 async def insert_athlete_subtask_documents(documents):
-    ids = {[d.metadata.get('user_id') for d in documents]}
+    ids = [d.metadata.get('user_id') for d in documents]
 
     await subtask_vectorstore.aadd_documents(
-        documents=documents
+        documents=documents,
+        ids=ids
     )
     logger.info(f"Inserted {len(documents)} subtasks documents for users: {ids}")
 
