@@ -37,7 +37,7 @@ campaign_metadata_config = [
     {"name": "user_id", "type": "tag"},
     {"name": "organization_id", "type": "tag"},
     {"name": "campaign_id", "type": "tag"},
-    {"brand": "campaign_id", "type": "tag"}
+    {"name": "brand", "type": "tag"}
 ]
 
 subtask_metadata_config = [
