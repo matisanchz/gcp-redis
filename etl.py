@@ -19,7 +19,7 @@ async def bulk_insert_user_documents(users):
         n+=1
     
     await insert_user_documents(user_documents)
-    await insert_athlete_subtask_documents(subtask_document)
+    await insert_athlete_subtask_documents(subtask_documents)
 
 async def bulk_insert_campaign_documents(campaigns):
     documents = []
