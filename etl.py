@@ -56,7 +56,7 @@ async def etl_campaigns():
 async def etl():
     try:
         await etl_users()
-        #await etl_campaigns()
+        await etl_campaigns()
         logger.info(f"ETL sucessfully completed")
     except Exception as e:
         logger.error(f'ETL process failed: {e}')

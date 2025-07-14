@@ -42,7 +42,7 @@ subtask_config = RedisConfig(
 
 subtask_vectorstore = RedisVectorStore(
     embeddings=embeddings,
-    config=campaign_config
+    config=subtask_config
 )
 
 async def insert_user_documents(documents):
