@@ -25,6 +25,7 @@ async def process_change(change):
         elif change["ns"]["coll"] == 'subtasks':
             logger.info("Subtask INSERT event detected")
             await insert_subtask_document(change["fullDocument"])
+
     # Change Streams for update activities
     elif operation_type == "update":
         if change["ns"]["coll"] == 'users':
@@ -42,6 +43,7 @@ async def process_change(change):
         elif change["ns"]["coll"] == 'subtasks':
             logger.info("Subtask UPDATE event detected")
             await update_subtask_document(change["fullDocument"])
+            
     # Change Streams for delete activities
     elif operation_type == "delete":
         if change["ns"]["coll"] == 'users':
