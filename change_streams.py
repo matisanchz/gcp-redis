@@ -6,6 +6,7 @@ from load import *
 logger = logging.getLogger(__name__)
 
 def process_change(collection, operation_type, document):
+    return None
     
     # Change Streams for insert activities
     if operation_type == "insert":

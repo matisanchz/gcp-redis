@@ -30,11 +30,14 @@ def main(request: Request):
 
                 logger.info(f"Received trigger payload: {payload}")
 
+                collection = payload.get("collectionName")
                 operation_type = payload.get("operationType")
-
+                _id = payload.get("_id")
                 document = payload.get("document")
+                updatedFields = payload.get("updatedFields")
+                removedFields = payload.get("removedFields")
 
-                process_change(operation_type, document)
+                process_change(collection, operation_type, _id, document, updatedFields, removedFields)
                 return {"message": "Trigger successfully executed."}, 200
             except Exception as e:
                 logger.error(f"An unexpected error occurred in Cloud Function: {e}")
