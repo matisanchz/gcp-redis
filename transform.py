@@ -71,7 +71,7 @@ def get_updated_user_document(user):
     return doc
 
 def get_updated_useridentities_document(useridentity):
-    old_document = get_existing_user_document_by_field("user_id", str(useridentity["userId"]))
+    old_document = get_existing_user_document_by_field("user_id", str(useridentity["_id"]))
 
     pattern = r'(<extraInfo>)(.*?)(</extraInfo>)'
 
@@ -290,7 +290,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
     return doc
 
 def get_updated_subtask_organization_document(user_id):
-    old_document = get_existing_athlete_subtask_document(user_id)
+    old_document = get_existing_athlete_subtask_document_by_field("user_id", user_id)
 
     doc = Document(
         page_content=old_document.page_content,
