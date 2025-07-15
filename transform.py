@@ -1,7 +1,7 @@
 import logging
 from langchain.schema import Document
 from extract import *
-from load import get_existing_user_document, get_existing_campaign_document, get_existing_athlete_subtask_document
+from load import get_existing_user_document_by_field, get_existing_campaign_document, get_existing_athlete_subtask_document_by_field
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ def get_user_document(user):
     return doc
 
 def get_updated_user_document(user):
-    old_document = get_existing_user_document(str(user["_id"]))
+    old_document = get_existing_user_document_by_field("user_id", str(user["_id"]))
 
     pattern = r'(<basicInfo>)(.*?)(</basicInfo>)'
 
@@ -81,6 +81,31 @@ def get_updated_useridentities_document(useridentity):
         if key not in ["__v", "userId", "_id"]:
             new_content += f"{key}: {value}.\n"
 
+
+    updated_data = re.sub(
+        pattern,
+        lambda m: f"{m.group(1)}\n{new_content}\n{m.group(3)}",
+        old_document.page_content,
+        flags=re.DOTALL
+    )
+
+    doc = Document(
+        page_content=updated_data,
+        metadata={
+            "type": old_document.metadata["type"],
+            "user_id": old_document.metadata["user_id"],
+            "organization_id": old_document.metadata["organization_id"]
+        }
+    )
+
+    return doc
+
+def get_updated_user_organization_document(_id, name):
+    old_document = get_existing_user_document_by_field("organization_id", _id)
+
+    pattern = r'(<organizationName>)(.*?)(</organizationName>)'
+
+    new_content = name
 
     updated_data = re.sub(
         pattern,
@@ -224,7 +249,17 @@ def get_athlete_subtask_document(user):
     return None
 
 def get_updated_subtask_document(subtask, insert: bool = False):
-    old_document = get_existing_athlete_subtask_document(str(subtask["athleteId"]))
+    field_name = None
+    value = None
+
+    if "athleteId" in subtask:
+        field_name = "user_id"
+        value = str(subtask["athleteId"])
+    else:
+        field_name = "organization_id"
+        value = str(subtask["organizationId"])
+    
+    old_document = get_existing_athlete_subtask_document_by_field(field_name, value)
 
     new_content = ""
 
@@ -248,8 +283,21 @@ def get_updated_subtask_document(subtask, insert: bool = False):
         page_content=new_content,
         metadata={
             "type": old_document.metadata["type"],
+            "user_id": str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"],
+            "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
+        }
+    )
+    return doc
+
+def get_updated_subtask_organization_document(user_id):
+    old_document = get_existing_athlete_subtask_document(user_id)
+
+    doc = Document(
+        page_content=old_document.page_content,
+        metadata={
+            "type": old_document.metadata["type"],
             "user_id": old_document.metadata["user_id"],
-            "organization_id": old_document.metadata["organizationId"]
+            "organization_id": str(user_id["organizationId"])
         }
     )
     return doc

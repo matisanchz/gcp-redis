@@ -104,9 +104,9 @@ def delete_athlete_subtask_document(user_id):
         logger.info(f"Deleted subtask document for user_id: {user_id}")
     else:
         logger.info(f"Error deleting subtask document for user_id: {user_id}")
-
-def get_existing_user_document(user_id):
-    expression = FilterExpression(f"@user_id:{{{user_id}}}")
+    
+def get_existing_user_document_by_field(field_name, value):
+    expression = FilterExpression(f"@{field_name}:{{{value}}}")
     
     document = athlete_vectorstore.similarity_search(
         query="",
@@ -133,8 +133,8 @@ def get_existing_campaign_document(campaign_id):
     else:
         return None
     
-def get_existing_athlete_subtask_document(user_id):
-    expression = FilterExpression(f"@user_id:{{{user_id}}}")
+def get_existing_athlete_subtask_document_by_field(field_name, value):
+    expression = FilterExpression(f"@{field_name}:{{{value}}}")
     
     document = subtask_vectorstore.similarity_search(
         query="",
