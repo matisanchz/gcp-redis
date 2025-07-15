@@ -1,15 +1,14 @@
 import logging
 from langchain.schema import Document
-from redisvl.query.filter import FilterExpression
 from extract import *
 from load import get_existing_user_document, get_existing_campaign_document, get_existing_athlete_subtask_document
 
 logger = logging.getLogger(__name__)
 
-async def get_user_document(user):
-    user_metadata = await get_user_metadata(user["_id"])
+def get_user_document(user):
+    user_metadata = get_user_metadata(user["_id"])
 
-    organization = await get_organization_name(user["organizationId"])
+    organization = get_organization_name(user["organizationId"])
 
     # Organize information with labels
     
@@ -42,7 +41,7 @@ async def get_user_document(user):
 
     return doc
 
-async def get_updated_user_document(user):
+def get_updated_user_document(user):
     old_document = get_existing_user_document(str(user["_id"]))
 
     pattern = r'(<basicInfo>)(.*?)(</basicInfo>)'
@@ -71,7 +70,7 @@ async def get_updated_user_document(user):
 
     return doc
 
-async def get_updated_useridentities_document(useridentity):
+def get_updated_useridentities_document(useridentity):
     old_document = get_existing_user_document(str(useridentity["userId"]))
 
     pattern = r'(<extraInfo>)(.*?)(</extraInfo>)'
@@ -101,8 +100,8 @@ async def get_updated_useridentities_document(useridentity):
 
     return doc
 
-async def get_campaign_document(campaign):
-    tasks = await get_tasks_by_campaign_id(campaign["_id"])
+def get_campaign_document(campaign):
+    tasks = get_tasks_by_campaign_id(campaign["_id"])
     campaign_id = str(campaign["_id"])
     content = "<campaignData>\n"
     for key, value in campaign.items():
@@ -128,7 +127,7 @@ async def get_campaign_document(campaign):
     )
     return doc
 
-async def get_updated_campaign_document(campaign):
+def get_updated_campaign_document(campaign):
     old_document = get_existing_campaign_document(str(campaign["_id"]))
 
     pattern = r'(<campaignData>)(.*?)(</campaignData>)'
@@ -159,7 +158,7 @@ async def get_updated_campaign_document(campaign):
     )
     return doc
 
-async def get_updated_task_document(task, insert: bool = False):
+def get_updated_task_document(task, insert: bool = False):
     old_document = get_existing_campaign_document(str(task["campaignId"]))
 
     pattern = r'(<taskData>)(.*?)(</taskData>)'
@@ -176,7 +175,7 @@ async def get_updated_task_document(task, insert: bool = False):
         for key, value in task.items():
             new_content += f"{key}: {value}. "
     else:
-        tasks = await get_tasks_by_campaign_id(str(task["campaignId"]))
+        tasks = get_tasks_by_campaign_id(str(task["campaignId"]))
 
         for t in tasks:
             new_content += f"\nTask:"
@@ -202,8 +201,8 @@ async def get_updated_task_document(task, insert: bool = False):
     )
     return doc
 
-async def get_athlete_subtask_document(user):
-    subtasks = await get_subtasks_by_user_id(user["_id"])
+def get_athlete_subtask_document(user):
+    subtasks = get_subtasks_by_user_id(user["_id"])
     if subtasks:
         content = ""
         for subtask in subtasks:
@@ -224,7 +223,7 @@ async def get_athlete_subtask_document(user):
         return doc
     return None
 
-async def get_updated_subtask_document(subtask, insert: bool = False):
+def get_updated_subtask_document(subtask, insert: bool = False):
     old_document = get_existing_athlete_subtask_document(str(subtask["athleteId"]))
 
     new_content = ""
@@ -237,7 +236,7 @@ async def get_updated_subtask_document(subtask, insert: bool = False):
                 new_content += f"{key}: {value}.\n"
         new_content += "\n"
     else:
-        subtasks = await get_subtasks_by_user_id(subtask["athleteId"])
+        subtasks = get_subtasks_by_user_id(subtask["athleteId"])
         if subtasks:
             for subtask in subtasks:
                 new_content += "Subtask: \n"

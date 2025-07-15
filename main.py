@@ -23,13 +23,17 @@ def main(request: Request):
         if request.path == "/redis-etl":
             logger.info("Starting Redis ETL process from main function...")
             try:
-                etl_thread = threading.Thread(
-                    target=run_async_in_thread,
-                    args=(etl(),),
-                    daemon=True
-                )
-                etl_thread.start()
+                etl()
                 return {"message": "ETL process started."}, 200
+            except Exception as e:
+                logger.error(f"Error during ETL process: {e}")
+                return {"error": f"ETL process failed: {e}"}, 500
+        elif request.path == "/testcito":
+            logger.info("Test")
+            try:
+                print("INGRESO")
+
+                return {"message": "Ingreso correcto."}, 200
             except Exception as e:
                 logger.error(f"Error during ETL process: {e}")
                 return {"error": f"ETL process failed: {e}"}, 500
@@ -61,17 +65,17 @@ def main(request: Request):
         return {"error": str(e)}, 500
 
 def run_async_in_thread(coro):
-    """Helper to run an async coroutine in a new event loop within a thread."""
+    """Helper to run an coroutine in a new event loop within a thread."""
     asyncio.run(coro)
 
-async def watch_single_database(db_name):
+def watch_single_database(db_name):
     logger.info(f"Start watching collections for db {db_name}...")
     try:
         db = mongo_client.get_database(db_name)
         with db.watch(full_document='updateLookup', full_document_before_change="required") as stream:
             asyncio.get_running_loop()
             for change in stream:
-                await process_change(change)
+                process_change(change)
         logger.info(f"Ending {db_name} listening...")
         return {"error": "The change stream listener for db {db_name} closed"}, 500
     except Exception as e:

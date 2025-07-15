@@ -45,39 +45,39 @@ subtask_vectorstore = RedisVectorStore(
     config=subtask_config
 )
 
-async def insert_user_documents(documents):
+def insert_user_documents(documents):
     # The id for each document, will be the user_id
     ids = [d.metadata.get('user_id') for d in documents]
 
-    await athlete_vectorstore.aadd_documents(
+    athlete_vectorstore.add_documents(
         documents=documents,
         ids=ids
     )
 
     logger.info(f"Inserted {len(documents)} documents for users: {ids}")
 
-async def insert_campaign_documents(documents):
+def insert_campaign_documents(documents):
 
     ids = [d.metadata.get('campaign_id') for d in documents]
         
-    await campaign_vectorstore.aadd_documents(
+    campaign_vectorstore.add_documents(
         documents=documents,
         ids=ids
     )
     logger.info(f"Inserted {len(documents)} documents for campaigns: {ids}")
 
-async def insert_athlete_subtask_documents(documents):
+def insert_athlete_subtask_documents(documents):
     ids = [d.metadata.get('user_id') for d in documents]
 
-    await subtask_vectorstore.aadd_documents(
+    subtask_vectorstore.add_documents(
         documents=documents,
         ids=ids
     )
     logger.info(f"Inserted {len(documents)} subtasks documents for users: {ids}")
 
-async def delete_user_document(user_id):
+def delete_user_document(user_id):
     # Delete User Index
-    deleted = await athlete_vectorstore.adelete(
+    deleted = athlete_vectorstore.delete(
         ids=[user_id]
     )
     if deleted:
@@ -85,9 +85,9 @@ async def delete_user_document(user_id):
     else:
         logger.info(f"Error deleting document for user_id: {user_id}")
 
-async def delete_campaign_document(campaign_id):
+def delete_campaign_document(campaign_id):
     # Delete Campaign Index
-    deleted = await campaign_vectorstore.adelete(
+    deleted = campaign_vectorstore.delete(
         ids=[campaign_id]
     )
     if deleted:
@@ -95,9 +95,9 @@ async def delete_campaign_document(campaign_id):
     else:
         logger.info(f"Error deleting document for campaign_id: {campaign_id}")
 
-async def delete_athlete_subtask_document(user_id):
+def delete_athlete_subtask_document(user_id):
     # Delete Athlete Subtask Index
-    deleted = await subtask_vectorstore.adelete(
+    deleted = subtask_vectorstore.delete(
         ids=[user_id]
     )
     if deleted:
@@ -105,10 +105,10 @@ async def delete_athlete_subtask_document(user_id):
     else:
         logger.info(f"Error deleting subtask document for user_id: {user_id}")
 
-async def get_existing_user_document(user_id):
+def get_existing_user_document(user_id):
     expression = FilterExpression(f"@user_id:{{{user_id}}}")
     
-    document = await athlete_vectorstore.asimilarity_search(
+    document = athlete_vectorstore.similarity_search(
         query="",
         k=1,
         filter=expression
@@ -119,10 +119,10 @@ async def get_existing_user_document(user_id):
     else:
         return None
     
-async def get_existing_campaign_document(campaign_id):
+def get_existing_campaign_document(campaign_id):
     expression = FilterExpression(f"@campaign_id:{{{campaign_id}}}")
     
-    document = await campaign_vectorstore.asimilarity_search(
+    document = campaign_vectorstore.similarity_search(
         query="",
         k=1,
         filter=expression
@@ -133,10 +133,10 @@ async def get_existing_campaign_document(campaign_id):
     else:
         return None
     
-async def get_existing_athlete_subtask_document(user_id):
+def get_existing_athlete_subtask_document(user_id):
     expression = FilterExpression(f"@user_id:{{{user_id}}}")
     
-    document = await subtask_vectorstore.asimilarity_search(
+    document = subtask_vectorstore.similarity_search(
         query="",
         k=1,
         filter=expression
