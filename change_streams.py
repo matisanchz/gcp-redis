@@ -89,8 +89,10 @@ def update_user_document(_id, user, updateFields):
 def insert_useridentities_document(useridentity):
     logger.info(f"Processing INSERT user {useridentity['userId']}")
     doc = get_updated_useridentities_document(useridentity)
-    delete_user_document(useridentity['userId'])
-    insert_user_documents(doc)
+    # Consider the posibility that some useridentities register belongs to user != "ATHLETE"
+    if doc:
+        delete_user_document(useridentity['userId'])
+        insert_user_documents(doc)
 
 def update_useridentities_document(useridentity):
     logger.info(f"Processing UPDATE user {useridentity['userId']}")

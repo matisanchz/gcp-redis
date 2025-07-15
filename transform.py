@@ -73,32 +73,35 @@ def get_updated_user_document(user):
 def get_updated_useridentities_document(useridentity):
     old_document = get_existing_user_document_by_field("user_id", str(useridentity["_id"]))
 
-    pattern = r'(<extraInfo>)(.*?)(</extraInfo>)'
+    if old_document:
 
-    new_content = ""
+        pattern = r'(<extraInfo>)(.*?)(</extraInfo>)'
 
-    for key, value in useridentity.items():
-        if key not in ["__v", "userId", "_id"]:
-            new_content += f"{key}: {value}.\n"
+        new_content = ""
+
+        for key, value in useridentity.items():
+            if key not in ["__v", "userId", "_id"]:
+                new_content += f"{key}: {value}.\n"
 
 
-    updated_data = re.sub(
-        pattern,
-        lambda m: f"{m.group(1)}\n{new_content}\n{m.group(3)}",
-        old_document.page_content,
-        flags=re.DOTALL
-    )
+        updated_data = re.sub(
+            pattern,
+            lambda m: f"{m.group(1)}\n{new_content}\n{m.group(3)}",
+            old_document.page_content,
+            flags=re.DOTALL
+        )
 
-    doc = Document(
-        page_content=updated_data,
-        metadata={
-            "type": old_document.metadata["type"],
-            "user_id": old_document.metadata["user_id"],
-            "organization_id": old_document.metadata["organization_id"]
-        }
-    )
+        doc = Document(
+            page_content=updated_data,
+            metadata={
+                "type": old_document.metadata["type"],
+                "user_id": old_document.metadata["user_id"],
+                "organization_id": old_document.metadata["organization_id"]
+            }
+        )
 
-    return doc
+        return doc
+    return None
 
 def get_updated_user_organization_document(_id, name):
     old_document = get_existing_user_document_by_field("organization_id", _id)
