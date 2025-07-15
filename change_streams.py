@@ -5,64 +5,64 @@ from load import *
 
 logger = logging.getLogger(__name__)
 
-def process_change(change):
-    operation_type = change.get("operationType")
+def process_change(collection, operation_type, document):
     
     # Change Streams for insert activities
     if operation_type == "insert":
-        if change["ns"]["coll"] == 'users':
+        if collection == 'users':
             logger.info("User INSERT event detected")
-            insert_user_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'useridentities':
+            insert_user_document(document)
+        elif collection == 'useridentities':
             logger.info("Useridentities INSERT event detected")
-            insert_useridentities_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'campaigns':
+            insert_useridentities_document(document)
+        elif collection == 'campaigns':
             logger.info("Campaign INSERT event detected")
-            insert_campaign_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'tasks':
+            insert_campaign_document(document)
+        elif collection == 'tasks':
             logger.info("Task INSERT event detected")
-            insert_task_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'subtasks':
+            insert_task_document(document)
+        elif collection == 'subtasks':
             logger.info("Subtask INSERT event detected")
-            insert_subtask_document(change["fullDocument"])
+            insert_subtask_document(document)
 
     # Change Streams for update activities
     elif operation_type == "update":
-        if change["ns"]["coll"] == 'users':
+        if collection == 'users':
             logger.info("User UPDATE event detected")
-            update_user_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'useridentities':
+            update_user_document(document)
+        elif collection == 'useridentities':
             logger.info("Useridentities UPDATE event detected")
-            update_useridentities_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'campaigns':
+            update_useridentities_document(document)
+        elif collection == 'campaigns':
             logger.info("Campaign UPDATE event detected")
-            update_campaign_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'tasks':
+            update_campaign_document(document)
+        elif collection == 'tasks':
             logger.info("Task UPDATE event detected")
-            update_task_document(change["fullDocument"])
-        elif change["ns"]["coll"] == 'subtasks':
+            update_task_document(document)
+        elif collection == 'subtasks':
             logger.info("Subtask UPDATE event detected")
-            update_subtask_document(change["fullDocument"])
-
+            update_subtask_document(document)
+    
     # Change Streams for delete activities
     elif operation_type == "delete":
-        if change["ns"]["coll"] == 'users':
+        change = document
+        if collection == 'users':
             logger.info("User DELETE event detected")
             delete_user_document(str(change["documentKey"]["_id"]))
-        elif change["ns"]["coll"] == 'useridentities':
+        elif collection == 'useridentities':
             logger.info("Useridentities DELETE event detected")
             delete_useridentities_document(str(change["fullDocumentBeforeChange"]))
-        elif change["ns"]["coll"] == 'campaigns':
+        elif collection == 'campaigns':
             logger.info("Campaign DELETE event detected")
             delete_campaign_document(str(change["documentKey"]["_id"]))
-        elif change["ns"]["coll"] == 'tasks':
+        elif collection == 'tasks':
             logger.info("Task DELETE event detected")
             delete_task_document(change["fullDocument"]["campaignId"])
-        elif change["ns"]["coll"] == 'subtasks':
+        elif collection == 'subtasks':
             logger.info("Subtask DELETE event detected")
             delete_subtask_document(change["fullDocument"])
-    else:
-        logger.info(f"Other changes: {operation_type}")
+    
+    logger.info(f"Other changes: {operation_type}")
 
 # <----------------- USER ---------------------->
 
