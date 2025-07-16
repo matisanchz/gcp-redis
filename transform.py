@@ -135,13 +135,13 @@ def get_campaign_document(campaign):
     for key, value in campaign.items():
         if key not in ["_id"]:
             content += f"{key}: {value}.\n"
-    content = "\n</campaignData>\n"
-    content = "\n<taskData>\n"
+    content += "\n</campaignData>\n"
+    content += "\n<taskData>\n"
     for task in tasks:
         content += f"\nTask:"
         for key, value in task.items():
             content += f"{key}: {value}. "
-    content = "\n</taskData>\n"
+    content += "\n</taskData>\n"
 
     doc = Document(
         page_content=content,
