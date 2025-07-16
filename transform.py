@@ -13,11 +13,11 @@ def get_user_document(user):
     # Organize information with labels
     
     # Label 1 -> basicInfo
-    content = "<basicInfo>\n"
+    content = "<basicInfo>"
     for key, value in user.items():
         if key not in settings.USERS_IGNORE_FIELDS:
-            content += f"{key}: {value}.\n"
-    content += "</basicInfo>\n"
+            content += f"\n{key}: {value}."
+    content += "\n</basicInfo>"
 
     # Label 2 -> extraInfo
     content += "\n<extraInfo>\n"
@@ -50,7 +50,7 @@ def get_updated_user_document(user):
 
     for key, value in user.items():
         if key not in settings.USERS_IGNORE_FIELDS:
-            new_content += f"{key}: {value}.\n"
+            new_content += f"\n{key}: {value}."
 
     updated_data = re.sub(
         pattern,
