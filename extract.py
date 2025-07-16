@@ -146,6 +146,9 @@ def get_tasks_by_campaign_id(campaign_id):
         db = mongo_client.get_database('campaigns')
         tasks_collection = db['tasks']
 
+        if isinstance(campaign_id, str):
+            campaign_id = ObjectId(campaign_id)
+
         pipeline = [
             {
                 "$match": {
