@@ -138,11 +138,11 @@ def get_campaign_document(campaign):
     content += "\n</campaignData>\n"
     content += "\n<taskData>"
     for task in tasks:
-        content += f"\nTask:"
+        content += f"\n* Task:"
         for key, value in task.items():
             if key not in settings.TASKS_IGNORE_FIELDS:
                 content += f"\n{key}: {value}."
-    content += "\n</taskData>\n"
+    content += "\n</taskData>"
 
     doc = Document(
         page_content=content,
@@ -199,7 +199,7 @@ def get_updated_task_document(task, insert: bool = False):
         # We obtain the list of past tasks
         new_content = match.group(2).strip()
 
-        new_content += f"\nTask:"
+        new_content += f"\n* Task:"
         for key, value in task.items():
             if key not in settings.TASKS_IGNORE_FIELDS:
                 new_content += f"\n{key}: {value}. "
@@ -207,7 +207,7 @@ def get_updated_task_document(task, insert: bool = False):
         tasks = get_tasks_by_campaign_id(str(task["campaignId"]))
 
         for t in tasks:
-            new_content += f"\nTask:"
+            new_content += f"\n* Task:"
             for key, value in t.items():
                 if key not in settings.TASKS_IGNORE_FIELDS:
                     new_conew_contentntent += f"\n{key}: {value}."
