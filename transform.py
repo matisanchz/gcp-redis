@@ -17,12 +17,12 @@ def get_user_document(user):
     for key, value in user.items():
         if key not in settings.USERS_IGNORE_FIELDS:
             content += f"\n{key}: {value}."
-    content += "\n</basicInfo>"
+    content += "\n</basicInfo>\n"
 
     # Label 2 -> extraInfo
     content += "\n<extraInfo>\n"
     for key, value in user_metadata[0].items():
-        content += f"{key}: {value}.\n"
+        content += f"\n{key}: {value}."
     content += "</extraInfo>\n"
 
     # Label 3 -> organizationName
@@ -81,7 +81,7 @@ def get_updated_useridentities_document(useridentity):
 
         for key, value in useridentity.items():
             if key not in ["__v", "userId", "_id"]:
-                new_content += f"{key}: {value}.\n"
+                new_content += f"\n{key}: {value}."
 
 
         updated_data = re.sub(
