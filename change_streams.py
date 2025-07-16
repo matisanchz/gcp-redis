@@ -59,7 +59,7 @@ def process_change(collection, operation_type, _id, document, updatedFields, rem
             return delete_campaign_document(_id)
         elif collection == 'tasks':
             logger.info("Task DELETE event detected")
-            return delete_task_document(document["campaignId"])
+            return delete_task_document(document)
         elif collection == 'subtasks':
             logger.info("Subtask DELETE event detected")
             return delete_subtask_document(document)
