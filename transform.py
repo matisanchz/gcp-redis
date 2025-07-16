@@ -224,7 +224,7 @@ def get_updated_task_document(task, insert: bool = False):
         metadata={
             "type": old_document.metadata["type"],
             "campaign_id": old_document.metadata["campaign_id"],
-            "organization_id": old_document.metadata["organizationId"],
+            "organization_id": old_document.metadata["organization_id"],
             "user_id": old_document.metadata["user_id"],
             "brand": old_document.metadata["brand"]
         }
