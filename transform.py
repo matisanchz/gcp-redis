@@ -133,14 +133,15 @@ def get_campaign_document(campaign):
     campaign_id = str(campaign["_id"])
     content = "<campaignData>\n"
     for key, value in campaign.items():
-        if key not in ["_id"]:
+        if key not in settings.CAMPAIGNS_IGNORE_FIELDS:
             content += f"{key}: {value}.\n"
     content += "\n</campaignData>\n"
-    content += "\n<taskData>\n"
+    content += "\n<taskData>"
     for task in tasks:
         content += f"\nTask:"
         for key, value in task.items():
-            content += f"{key}: {value}. "
+            if key not in settings.TASKS_IGNORE_FIELDS:
+                content += f"\n{key}: {value}."
     content += "\n</taskData>\n"
 
     doc = Document(
@@ -163,9 +164,8 @@ def get_updated_campaign_document(campaign):
     new_content = ""
 
     for key, value in campaign.items():
-        if key not in ["_id"]:
+        if key not in settings.CAMPAIGNS_IGNORE_FIELDS:
             new_content += f"{key}: {value}.\n"
-
 
     updated_data = re.sub(
         pattern,
@@ -201,14 +201,16 @@ def get_updated_task_document(task, insert: bool = False):
             new_content = ""
         new_content += f"\nTask:"
         for key, value in task.items():
-            new_content += f"{key}: {value}. "
+            if key not in settings.TASKS_IGNORE_FIELDS:
+                new_content += f"\n{key}: {value}. "
     else:
         tasks = get_tasks_by_campaign_id(str(task["campaignId"]))
 
         for t in tasks:
             new_content += f"\nTask:"
             for key, value in t.items():
-                new_conew_contentntent += f"{key}: {value}. "
+                if key not in settings.TASKS_IGNORE_FIELDS:
+                    new_conew_contentntent += f"\n{key}: {value}."
          
     updated_data = re.sub(
         pattern,
@@ -234,10 +236,11 @@ def get_athlete_subtask_document(user):
     if subtasks:
         content = ""
         for subtask in subtasks:
-            content += "Subtask: \n"
+            content += "Subtask:"
             for key, value in subtask.items():
-                content += f"{key}: {value}.\n"
-            content += "\n"
+                if key not in settings.SUBTASKS_IGNORE_FIELDS:
+                    content += f"\n{key}: {value}."
+            content += "\n\n"
 
         doc = Document(
             page_content=content,
