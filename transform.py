@@ -20,7 +20,7 @@ def get_user_document(user):
     content += "\n</basicInfo>\n"
 
     # Label 2 -> extraInfo
-    content += "\n<extraInfo>\n"
+    content += "\n<extraInfo>"
     for key, value in user_metadata[0].items():
         content += f"\n{key}: {value}."
     content += "</extraInfo>\n"
