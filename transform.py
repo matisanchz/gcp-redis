@@ -22,7 +22,8 @@ def get_user_document(user):
     # Label 2 -> extraInfo
     content += "\n<extraInfo>"
     for key, value in user_metadata[0].items():
-        content += f"\n{key}: {value}."
+        if key not in settings.USERIDENTITIES_IGNORE_FIELDS:
+            content += f"\n{key}: {value}."
     content += "</extraInfo>\n"
 
     # Label 3 -> organizationName
@@ -80,9 +81,8 @@ def get_updated_useridentities_document(useridentity):
         new_content = ""
 
         for key, value in useridentity.items():
-            if key not in ["__v", "userId", "_id"]:
+            if key not in settings.USERIDENTITIES_IGNORE_FIELDS:
                 new_content += f"\n{key}: {value}."
-
 
         updated_data = re.sub(
             pattern,

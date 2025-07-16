@@ -47,3 +47,4 @@ SUBTASK_METADATA_CONFIG = [
 ]
 
 USERS_IGNORE_FIELDS = ["_id", "organizationId", "userType", "createdAt", "updatedAt", "__v", "userId"]
+USERIDENTITIES_IGNORE_FIELDS = ["__v", "userId", "_id"]
