@@ -210,7 +210,7 @@ def get_updated_task_document(task, insert: bool = False):
             new_content += f"\n* Task:"
             for key, value in t.items():
                 if key not in settings.TASKS_IGNORE_FIELDS:
-                    new_conew_contentntent += f"\n{key}: {value}."
+                    new_content += f"\n{key}: {value}."
          
     updated_data = re.sub(
         pattern,

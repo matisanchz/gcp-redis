@@ -2,7 +2,6 @@ import settings
 import logging
 import re
 from bson import ObjectId
-import ssl
 
 mongo_client = settings.MONGO_CLIENT
 
@@ -146,9 +145,6 @@ def get_tasks_by_campaign_id(campaign_id):
         logger.info(f'Getting tasks for campaign {campaign_id}')
         db = mongo_client.get_database('campaigns')
         tasks_collection = db['tasks']
-
-        print("SSL VERSION:")
-        print(ssl.OPENSSL_VERSION)
 
         if isinstance(campaign_id, str):
             campaign_id = ObjectId(campaign_id)
