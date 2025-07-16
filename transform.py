@@ -204,7 +204,7 @@ def get_updated_task_document(task, insert: bool = False):
             if key not in settings.TASKS_IGNORE_FIELDS:
                 new_content += f"\n{key}: {value}. "
     else:
-        tasks = get_tasks_by_campaign_id(str(task["campaignId"]))
+        tasks = get_tasks_by_campaign_id(task["campaignId"])
 
         for t in tasks:
             new_content += f"\n* Task:"
