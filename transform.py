@@ -267,33 +267,36 @@ def get_updated_subtask_document(subtask, insert: bool = False):
     
     old_document = get_existing_athlete_subtask_document_by_field(field_name, value)
 
-    new_content = ""
+    if old_document:
+        new_content = ""
 
-    if insert:
-        new_content += old_document.page_content
-        new_content += "Subtask: \n"
-        for key, value in subtask.items():
-            if key not in ["_id", "createdAt", "updatedAt", "__v"]:
-                new_content += f"{key}: {value}.\n"
-        new_content += "\n"
-    else:
-        subtasks = get_subtasks_by_user_id(subtask["athleteId"])
-        if subtasks:
-            for subtask in subtasks:
-                new_content += "Subtask: \n"
-                for key, value in subtask.items():
+        if insert:
+            new_content += old_document.page_content
+            new_content += "Subtask: \n"
+            for key, value in subtask.items():
+                if key not in ["_id", "createdAt", "updatedAt", "__v"]:
                     new_content += f"{key}: {value}.\n"
-                new_content += "\n"
+            new_content += "\n"
+        else:
+            subtasks = get_subtasks_by_user_id(subtask["athleteId"])
+            if subtasks:
+                for subtask in subtasks:
+                    new_content += "Subtask: \n"
+                    for key, value in subtask.items():
+                        new_content += f"{key}: {value}.\n"
+                    new_content += "\n"
 
-    doc = Document(
-        page_content=new_content,
-        metadata={
-            "type": old_document.metadata["type"],
-            "user_id": str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"],
-            "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
-        }
-    )
-    return doc
+        doc = Document(
+            page_content=new_content,
+            metadata={
+                "type": old_document.metadata["type"],
+                "user_id": str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"],
+                "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
+            }
+        )
+        return doc
+    # If no doc is found, the user has no previous subtasks
+    return None
 
 def get_updated_subtask_organization_document(user_id):
     old_document = get_existing_athlete_subtask_document_by_field("user_id", user_id)

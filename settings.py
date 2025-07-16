@@ -49,5 +49,5 @@ SUBTASK_METADATA_CONFIG = [
 USERS_IGNORE_FIELDS = ["_id", "organizationId", "userType", "createdAt", "updatedAt", "__v", "userId"]
 USERIDENTITIES_IGNORE_FIELDS = ["__v", "userId", "_id"]
 CAMPAIGNS_IGNORE_FIELDS = ["_id", "organizationId", "contractId", "createdAt", "updatedAt", "__v"]
-TASKS_IGNORE_FIELDS = ["_id", "campaignId", "organizationId", "adminId", "createdAt", "updatedAt", "__v"]
+TASKS_IGNORE_FIELDS = ["campaignId", "organizationId", "adminId", "createdAt", "updatedAt", "__v"]
 SUBTASKS_IGNORE_FIELDS = ["_id", "organizationId", "mainTaskId", "athleteId", "createdAt", "updatedAt", "__v"]

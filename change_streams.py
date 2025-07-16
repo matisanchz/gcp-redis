@@ -143,7 +143,10 @@ def delete_task_document(task):
 def insert_subtask_document(subtask):
     logger.info(f"Processing INSERT subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, True)
-    delete_subtask_document(str(subtask['athleteId']))
+    if doc:
+        # If no doc is found, the user has no previous subtask.
+        delete_subtask_document(str(subtask['athleteId']))
+    
     insert_athlete_subtask_documents([doc])
 
 def update_subtask_document(subtask, updatedFields):
@@ -154,7 +157,7 @@ def update_subtask_document(subtask, updatedFields):
 
     # If the athleteId was modified, we must restore 2 documents
     if "athleteId" in updatedFields:
-        logger.info(f"Processing INSERT subtask for user: {str(updatedFields['athleteId'])}")
+        logger.info(f"Processing UPDATE subtask for user: {str(updatedFields['athleteId'])}")
         doc = get_updated_subtask_document(updatedFields, False)
         delete_subtask_document(str(updatedFields['athleteId']))
         insert_athlete_subtask_documents([doc])
