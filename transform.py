@@ -71,7 +71,7 @@ def get_updated_user_document(user):
     return doc
 
 def get_updated_useridentities_document(useridentity):
-    old_document = get_existing_user_document_by_field("user_id", str(useridentity["_id"]))
+    old_document = get_existing_user_document_by_field("user_id", str(useridentity["userId"]))
 
     if old_document:
 
