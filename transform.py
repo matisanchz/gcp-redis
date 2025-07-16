@@ -131,10 +131,10 @@ def get_updated_user_organization_document(_id, name):
 def get_campaign_document(campaign):
     tasks = get_tasks_by_campaign_id(campaign["_id"])
     campaign_id = str(campaign["_id"])
-    content = "<campaignData>\n"
+    content = "<campaignData>"
     for key, value in campaign.items():
         if key not in settings.CAMPAIGNS_IGNORE_FIELDS:
-            content += f"{key}: {value}.\n"
+            content += f"\n{key}: {value}."
     content += "\n</campaignData>\n"
     content += "\n<taskData>"
     for task in tasks:
@@ -165,7 +165,7 @@ def get_updated_campaign_document(campaign):
 
     for key, value in campaign.items():
         if key not in settings.CAMPAIGNS_IGNORE_FIELDS:
-            new_content += f"{key}: {value}.\n"
+            new_content += f"\n{key}: {value}."
 
     updated_data = re.sub(
         pattern,
