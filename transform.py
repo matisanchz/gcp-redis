@@ -15,7 +15,7 @@ def get_user_document(user):
     # Label 1 -> basicInfo
     content = "<basicInfo>\n"
     for key, value in user.items():
-        if key not in ["_id", "organizationId"]:
+        if key not in settings.USERS_IGNORE_FIELDS:
             content += f"{key}: {value}.\n"
     content += "</basicInfo>\n"
 
@@ -49,7 +49,7 @@ def get_updated_user_document(user):
     new_content = ""
 
     for key, value in user.items():
-        if key not in ["_id", "organizationId"]:
+        if key not in settings.USERS_IGNORE_FIELDS:
             new_content += f"{key}: {value}.\n"
 
     updated_data = re.sub(

@@ -26,13 +26,13 @@ GEMINI_API_KEY=os.environ.get('GEMINI_API_KEY')
 GEMINI_EMBEDDING_MODEL = "models/embedding-001"
 
 #METADATA CONFIG
-athlete_metadata_config = [
+ATHLETE_METADATA_CONFIG = [
     {"name": "type", "type": "tag"},
     {"name": "user_id", "type": "tag"},
     {"name": "organization_id", "type": "tag"}
 ]
 
-campaign_metadata_config = [
+CAMPAIGN_METADATA_CONFIG = [
     {"name": "type", "type": "tag"},
     {"name": "user_id", "type": "tag"},
     {"name": "organization_id", "type": "tag"},
@@ -40,8 +40,10 @@ campaign_metadata_config = [
     {"name": "brand", "type": "tag"}
 ]
 
-subtask_metadata_config = [
+SUBTASK_METADATA_CONFIG = [
     {"name": "organization_id", "type": "tag"},
     {"name": "user_id", "type": "tag"},
     {"name": "type", "type": "tag"}
 ]
+
+USERS_IGNORE_FIELDS = ["_id", "organizationId", "userType", "createdAt", "updatedAt", "__v", "userId"]

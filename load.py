@@ -13,7 +13,7 @@ athlete_config = RedisConfig(
     index_name = settings.REDIS_ATHLETE_INDEX,
     key_prefix = settings.REDIS_ATHLETE_INDEX,
     redis_url=settings.REDIS_URL,
-    metadata_schema=settings.athlete_metadata_config
+    metadata_schema=settings.ATHLETE_METADATA_CONFIG
 )
 
 athlete_vectorstore = RedisVectorStore(
@@ -25,7 +25,7 @@ campaign_config = RedisConfig(
     index_name = settings.REDIS_CAMPAIGN_INDEX,
     key_prefix = settings.REDIS_CAMPAIGN_INDEX,
     redis_url=settings.REDIS_URL,
-    metadata_schema=settings.campaign_metadata_config
+    metadata_schema=settings.CAMPAIGN_METADATA_CONFIG
 )
 
 campaign_vectorstore = RedisVectorStore(
@@ -37,7 +37,7 @@ subtask_config = RedisConfig(
     index_name = settings.REDIS_SUBTASK_INDEX,
     key_prefix = settings.REDIS_SUBTASK_INDEX,
     redis_url=settings.REDIS_URL,
-    metadata_schema=settings.subtask_metadata_config
+    metadata_schema=settings.SUBTASK_METADATA_CONFIG
 )
 
 subtask_vectorstore = RedisVectorStore(
