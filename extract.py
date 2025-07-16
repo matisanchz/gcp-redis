@@ -149,6 +149,7 @@ def get_tasks_by_campaign_id(campaign_id):
         print(f"TIPO DE CAMPAIGN ID {type(campaign_id)}")
 
         if isinstance(campaign_id, str):
+            print("SEEEEE")
             campaign_id = ObjectId(campaign_id)
 
         pipeline = [
