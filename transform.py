@@ -195,10 +195,10 @@ def get_updated_task_document(task, insert: bool = False):
 
     if insert:
         match = re.search(pattern, old_document.page_content, re.DOTALL)
-        if match:
-            new_content = match.group(1).strip()
-        else:
-            new_content = ""
+        
+        # We obtain the list of past tasks
+        new_content = match.group(2).strip()
+
         new_content += f"\nTask:"
         for key, value in task.items():
             if key not in settings.TASKS_IGNORE_FIELDS:
