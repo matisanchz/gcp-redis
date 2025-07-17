@@ -143,16 +143,11 @@ def delete_task_document(task):
 def insert_subtask_document(subtask):
     logger.info(f"Processing INSERT subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, True)
-    print("PASO 1")
     if doc:
-        # If no doc is found, the user has no previous subtask.
         delete_subtask_document(str(subtask['athleteId']))
     else:
-        print("PASO 2")
+        # If no doc is found, the user has no previous subtask.
         doc = get_new_single_subtask_document(subtask)
-        print("PASO 3")
-
-    print("PASO 4")
     
     insert_athlete_subtask_documents([doc])
 

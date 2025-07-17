@@ -300,13 +300,11 @@ def get_updated_subtask_document(subtask, insert: bool = False):
 def get_new_single_subtask_document(subtask):
     # If no doc is found, the user has no previous subtasks. We create a new one
     content = "* Subtask:"
-    print("ENTRO1")
+
     for key, value in subtask.items():
         if key not in settings.SUBTASKS_IGNORE_FIELDS:
             content += f"\n{key}: {value}."
     content += "\n\n"
-
-    print("ENTRO2")
 
     doc = Document(
         page_content=content,
@@ -316,7 +314,6 @@ def get_new_single_subtask_document(subtask):
             "organization_id": str(subtask["organizationId"]),
         }
     )
-    print("ENTRO3")
 
     return doc
 
