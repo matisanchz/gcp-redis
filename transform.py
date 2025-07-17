@@ -295,22 +295,29 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                 "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
             }
         )
-    else:
-        # If no doc is found, the user has no previous subtasks. We create a new one
-        content = "* Subtask:"
-        for key, value in subtask.items():
-            if key not in settings.SUBTASKS_IGNORE_FIELDS:
-                content += f"\n{key}: {value}."
-        content += "\n\n"
+    return doc
 
-        doc = Document(
-            page_content=content,
-            metadata={
-                "type": "athlete_subtask_summary",
-                "user_id": str(subtask["athleteId"]),
-                "organization_id": str(subtask["organizationId"]),
-            }
-        )
+def get_new_single_subtask_document(subtask):
+    # If no doc is found, the user has no previous subtasks. We create a new one
+    content = "* Subtask:"
+    print("ENTRO1")
+    for key, value in subtask.items():
+        if key not in settings.SUBTASKS_IGNORE_FIELDS:
+            content += f"\n{key}: {value}."
+    content += "\n\n"
+
+    print("ENTRO2")
+
+    doc = Document(
+        page_content=content,
+        metadata={
+            "type": "athlete_subtask_summary",
+            "user_id": str(subtask["athleteId"]),
+            "organization_id": str(subtask["organizationId"]),
+        }
+    )
+    print("ENTRO3")
+
     return doc
 
 def get_updated_subtask_organization_document(user_id):
