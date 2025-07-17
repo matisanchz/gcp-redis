@@ -196,7 +196,7 @@ def delete_subtask_document(subtask):
 def update_organization_event(_id, updatedFields, removedFields):
     if "name" in updatedFields or "name" in removedFields:
         logger.info(f"Processing UPDATE name field for organization: {_id}")
-        name = updatedFields["name"] if "name" in updatedFields else "Withouth Name"
+        name = updatedFields["name"] if "name" in updatedFields else "Without Name"
         logger.info(f"Processing UPDATE organization name: {name}")
         doc = get_updated_user_organization_document(_id, name)
         delete_user_document(doc.metadata["user_id"])

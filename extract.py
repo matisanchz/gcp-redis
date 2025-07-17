@@ -126,7 +126,7 @@ def get_organization_name(organization_id):
 
                 pipeline = [
                     {"$match": {"_id": ObjectId(organization_id)}},
-                    {"$addFields": {"name": {"$ifNull": ["$name", "Without name"]}}},
+                    {"$addFields": {"name": {"$ifNull": ["$name", "Without Name"]}}},
                     {"$project": {"_id": 0, "name": 1}}
                 ]
 
