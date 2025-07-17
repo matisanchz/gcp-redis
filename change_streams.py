@@ -76,7 +76,7 @@ def insert_user_document(user):
 
 def update_user_document(user):
     user_id = str(user["_id"])
-    if user["userType"] is not "ATHLETE":
+    if user["userType"] != "ATHLETE":
         delete_user_document(user_id)
         delete_athlete_subtask_document(user_id)
     else:
