@@ -29,7 +29,7 @@ def process_change(collection, operation_type, _id, document, updatedFields, rem
     elif operation_type == "update":
         if collection == 'users':
             logger.info("User UPDATE event detected")
-            return update_user_document(_id, document, updatedFields)
+            return update_user_document(document)
         elif collection == 'useridentities':
             logger.info("Useridentities UPDATE event detected")
             return update_useridentities_document(document)
@@ -73,17 +73,21 @@ def insert_user_document(user):
     doc = get_user_document(user)
     insert_user_documents([doc])
 
-def update_user_document(_id, user, updateFields):
+def update_user_document(user):
     user_id = str(user["_id"])
-    logger.info(f"Processing UPDATE user {user_id}")
-    doc = get_updated_user_document(user)
-    delete_user_document(user_id)
-    insert_user_documents([doc])
-    # If the user change organization, we must change the subtask docs metadata
-    if "organizationId" in updateFields:
-        doc = get_updated_subtask_organization_document(_id)
-        delete_athlete_subtask_document(_id)
-        insert_athlete_subtask_documents([doc])
+    if user["userType"] is not "ATHLETE":
+        delete_user_document(user_id)
+        # TODO
+    else:
+        logger.info(f"Processing UPDATE user {user_id}")
+        doc = get_updated_user_document(user)
+        if doc:
+            delete_user_document(user_id)
+            insert_user_documents([doc])
+        else:
+            # If no doc is found, we create a new one
+            logger.info("The user document should exists, but there is no document. Change to INSERT.")
+            insert_user_document(user)
 
 # <----------------- USERIDENTITIES ---------------------->
 def insert_useridentities_document(useridentity):
@@ -112,8 +116,13 @@ def insert_campaign_document(campaign):
 def update_campaign_document(campaign):
     logger.info(f"Processing UPDATE campaign {str(campaign['_id'])}")
     doc = get_updated_campaign_document(campaign)
-    delete_campaign_document(str(campaign['_id']))
-    insert_campaign_documents([doc])
+    if doc:
+        delete_campaign_document(str(campaign['_id']))
+        insert_campaign_documents([doc])
+    else:
+        # If no doc is found, we create a new one
+        logger.info("The campaign document should exists, but there is no document. Change to INSERT.")
+        insert_campaign_document(campaign)
 
 # <----------------- TASKS ---------------------->
 def insert_task_document(task):
@@ -147,6 +156,7 @@ def insert_subtask_document(subtask):
         delete_athlete_subtask_document(str(subtask['athleteId']))
     else:
         # If no doc is found, the user has no previous subtask.
+        logger.info("There is no previous subtasks for this user. Creating a new one.")
         doc = get_new_single_subtask_document(subtask)
     
     insert_athlete_subtask_documents([doc])
@@ -154,15 +164,25 @@ def insert_subtask_document(subtask):
 def update_subtask_document(subtask, updatedFields):
     logger.info(f"Processing UPDATE subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, False)
-    delete_athlete_subtask_document(subtask['athleteId'])
-    insert_athlete_subtask_documents([doc])
+    if doc:
+        delete_athlete_subtask_document(subtask['athleteId'])
+        insert_athlete_subtask_documents([doc])
+    else:
+        # If no doc is found, we create a new one
+        logger.info("The subtask document should exists, but there is no document. Change to INSERT.")
+        insert_subtask_document(subtask)
 
     # If the athleteId was modified, we must restore 2 documents
-    if updatedFields and "athleteId" in updatedFields:
-        logger.info(f"Processing UPDATE subtask for user: {str(updatedFields['athleteId'])}")
-        doc = get_updated_subtask_document(updatedFields, False)
-        delete_athlete_subtask_document(str(updatedFields['athleteId']))
-        insert_athlete_subtask_documents([doc])
+    if updatedFields:
+        if "athleteId" in updatedFields:
+            logger.info(f"Processing UPDATE subtask for athleteId change: {str(updatedFields['athleteId'])}")
+            doc = get_updated_subtask_document(updatedFields, False)
+            if doc:
+                delete_athlete_subtask_document(str(updatedFields['athleteId']))
+                insert_athlete_subtask_documents([doc])
+            else:
+                # If no doc is found, we create a new one
+                insert_subtask_document(subtask)
 
 def delete_subtask_document(subtask):
     logger.info(f"Processing DELETE subtask for user: {str(subtask['athleteId'])}")
