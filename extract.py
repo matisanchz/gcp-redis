@@ -81,6 +81,9 @@ def get_subtasks_by_user_id(user_id):
         db = mongo_client.get_database('campaigns')
         subtasks_collection = db['subtasks']
 
+        if isinstance(user_id, str):
+            user_id = ObjectId(user_id)
+
         subtasks = list(subtasks_collection.find({"athleteId": user_id}, {"_id": 0, "createdAt": 0, "updatedAt": 0, "__v": 0}))
         
         if subtasks:

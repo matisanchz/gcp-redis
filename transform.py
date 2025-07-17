@@ -279,8 +279,11 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                     new_content += f"{key}: {value}.\n"
             new_content += "\n"
         else:
+            print("ENTRO REY")
             subtasks = get_subtasks_by_user_id(subtask["athleteId"])
+            print(f"PASO REY -> {subtasks}")
             if subtasks:
+                print("ENTRO 2")
                 for s in subtasks:
                     new_content += "* Subtask: \n"
                     for key, value in s.items():
