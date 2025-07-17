@@ -128,21 +128,24 @@ def update_campaign_document(campaign):
 def insert_task_document(task):
     logger.info(f"Processing INSERT task for campaign: {str(task['campaignId'])}")
     doc = get_updated_task_document(task, True)
-    delete_campaign_document(str(task['campaignId']))
-    insert_campaign_documents([doc])
+    if doc:
+        delete_campaign_document(str(task['campaignId']))
+        insert_campaign_documents([doc])
 
 def update_task_document(task, updatedFields):
     logger.info(f"Processing UPDATE task for campaign: {str(task['campaignId'])}")
     doc = get_updated_task_document(task, False)
-    delete_campaign_document(str(task['campaignId']))
-    insert_campaign_documents([doc])
+    if doc:
+        delete_campaign_document(str(task['campaignId']))
+        insert_campaign_documents([doc])
 
     # If the campaignId was modified, we must restore 2 documents
     if updatedFields and "campaignId" in updatedFields:
         logger.info(f"Processing UPDATE task for campaign: {str(updatedFields['campaignId'])}")
         doc = get_updated_task_document(updatedFields, False)
-        delete_campaign_document(str(updatedFields['campaignId']))
-        insert_campaign_documents([doc])
+        if doc:
+            delete_campaign_document(str(updatedFields['campaignId']))
+            insert_campaign_documents([doc])
 
 def delete_task_document(task):
     logger.info(f"Processing DELETE task for campaign: {str(task['campaignId'])}")

@@ -197,48 +197,50 @@ def get_updated_campaign_document(campaign):
     return doc
 
 def get_updated_task_document(task, insert: bool = False):
+    doc = None
     old_document = get_existing_campaign_document(str(task["campaignId"]))
 
-    pattern = r'(<taskData>)(.*?)(</taskData>)'
+    if old_document:
+        pattern = r'(<taskData>)(.*?)(</taskData>)'
 
-    new_content = ""
+        new_content = ""
 
-    if insert:
-        match = re.search(pattern, old_document.page_content, re.DOTALL)
-        
-        # We obtain the list of past tasks
-        new_content = match.group(2).strip()
+        if insert:
+            match = re.search(pattern, old_document.page_content, re.DOTALL)
+            
+            # We obtain the list of past tasks
+            new_content = match.group(2).strip()
 
-        new_content += f"\n* Task:"
-        for key, value in task.items():
-            if key not in settings.TASKS_IGNORE_FIELDS:
-                new_content += f"\n{key}: {value}. "
-    else:
-        tasks = get_tasks_by_campaign_id(task["campaignId"])
-
-        for t in tasks:
             new_content += f"\n* Task:"
-            for key, value in t.items():
+            for key, value in task.items():
                 if key not in settings.TASKS_IGNORE_FIELDS:
-                    new_content += f"\n{key}: {value}."
-         
-    updated_data = re.sub(
-        pattern,
-        lambda m: f"{m.group(1)}\n{new_content}\n{m.group(3)}",
-        old_document.page_content,
-        flags=re.DOTALL
-    )
+                    new_content += f"\n{key}: {value}. "
+        else:
+            tasks = get_tasks_by_campaign_id(task["campaignId"])
 
-    doc = Document(
-        page_content=updated_data,
-        metadata={
-            "type": old_document.metadata["type"],
-            "campaign_id": old_document.metadata["campaign_id"],
-            "organization_id": old_document.metadata["organization_id"],
-            "user_id": old_document.metadata["user_id"],
-            "brand": old_document.metadata["brand"]
-        }
-    )
+            for t in tasks:
+                new_content += f"\n* Task:"
+                for key, value in t.items():
+                    if key not in settings.TASKS_IGNORE_FIELDS:
+                        new_content += f"\n{key}: {value}."
+            
+        updated_data = re.sub(
+            pattern,
+            lambda m: f"{m.group(1)}\n{new_content}\n{m.group(3)}",
+            old_document.page_content,
+            flags=re.DOTALL
+        )
+
+        doc = Document(
+            page_content=updated_data,
+            metadata={
+                "type": old_document.metadata["type"],
+                "campaign_id": old_document.metadata["campaign_id"],
+                "organization_id": old_document.metadata["organization_id"],
+                "user_id": old_document.metadata["user_id"],
+                "brand": old_document.metadata["brand"]
+            }
+        )
     return doc
 
 def get_athlete_subtask_document(user):
@@ -271,6 +273,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
 
     if old_document:
         organization_id = str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
+        user_id = str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"]
         new_content = ""
 
         if insert:
@@ -295,7 +298,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
             page_content=new_content,
             metadata={
                 "type": old_document.metadata["type"],
-                "user_id": str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"],
+                "user_id": user_id,
                 "organization_id": organization_id
             }
         )
