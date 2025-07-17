@@ -82,7 +82,7 @@ def update_user_document(_id, user, updateFields):
     # If the user change organization, we must change the subtask docs metadata
     if "organizationId" in updateFields:
         doc = get_updated_subtask_organization_document(_id)
-        delete_subtask_document(_id)
+        delete_athlete_subtask_document(_id)
         insert_athlete_subtask_documents([doc])
 
 # <----------------- USERIDENTITIES ---------------------->
@@ -144,7 +144,7 @@ def insert_subtask_document(subtask):
     logger.info(f"Processing INSERT subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, True)
     if doc:
-        delete_subtask_document(str(subtask['athleteId']))
+        delete_athlete_subtask_document(str(subtask['athleteId']))
     else:
         # If no doc is found, the user has no previous subtask.
         doc = get_new_single_subtask_document(subtask)
@@ -154,17 +154,14 @@ def insert_subtask_document(subtask):
 def update_subtask_document(subtask, updatedFields):
     logger.info(f"Processing UPDATE subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, False)
-    print("SALIO")
-    delete_subtask_document(str(subtask['athleteId']))
-    print("SALIO2")
-    print(doc)
+    delete_athlete_subtask_document(subtask['athleteId'])
     insert_athlete_subtask_documents([doc])
 
     # If the athleteId was modified, we must restore 2 documents
     if updatedFields and "athleteId" in updatedFields:
         logger.info(f"Processing UPDATE subtask for user: {str(updatedFields['athleteId'])}")
         doc = get_updated_subtask_document(updatedFields, False)
-        delete_subtask_document(str(updatedFields['athleteId']))
+        delete_athlete_subtask_document(str(updatedFields['athleteId']))
         insert_athlete_subtask_documents([doc])
 
 def delete_subtask_document(subtask):
