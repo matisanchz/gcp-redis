@@ -275,7 +275,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
             new_content += old_document.page_content
             new_content += "* Subtask: \n"
             for key, value in subtask.items():
-                if key not in ["_id", "createdAt", "updatedAt", "__v"]:
+                if key not in settings.SUBTASKS_IGNORE_FIELDS:
                     new_content += f"{key}: {value}.\n"
             new_content += "\n"
         else:
@@ -287,8 +287,14 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                 for s in subtasks:
                     new_content += "* Subtask: \n"
                     for key, value in s.items():
-                        new_content += f"{key}: {value}.\n"
+                        if key not in settings.SUBTASKS_IGNORE_FIELDS:
+                            new_content += f"{key}: {value}.\n"
                     new_content += "\n"
+                print(f"ENTRO 3 -> {new_content}")
+
+        print(f"type -> {old_document.metadata["type"]}")
+        print(f"user_id -> {str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"]}")
+        print(f"organization_id -> {str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]}")
 
         doc = Document(
             page_content=new_content,
@@ -298,6 +304,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                 "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
             }
         )
+        print("PASO 4")
     return doc
 
 def get_new_single_subtask_document(subtask):

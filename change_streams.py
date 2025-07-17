@@ -154,7 +154,10 @@ def insert_subtask_document(subtask):
 def update_subtask_document(subtask, updatedFields):
     logger.info(f"Processing UPDATE subtask for user: {str(subtask['athleteId'])}")
     doc = get_updated_subtask_document(subtask, False)
+    print("SALIO")
     delete_subtask_document(str(subtask['athleteId']))
+    print("SALIO2")
+    print(doc)
     insert_athlete_subtask_documents([doc])
 
     # If the athleteId was modified, we must restore 2 documents
