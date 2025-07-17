@@ -77,7 +77,7 @@ def update_user_document(user):
     user_id = str(user["_id"])
     if user["userType"] is not "ATHLETE":
         delete_user_document(user_id)
-        # TODO
+        delete_athlete_subtask_document(user_id)
     else:
         logger.info(f"Processing UPDATE user {user_id}")
         doc = get_updated_user_document(user)
