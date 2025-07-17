@@ -281,9 +281,9 @@ def get_updated_subtask_document(subtask, insert: bool = False):
         else:
             subtasks = get_subtasks_by_user_id(subtask["athleteId"])
             if subtasks:
-                for subtask in subtasks:
+                for s in subtasks:
                     new_content += "* Subtask: \n"
-                    for key, value in subtask.items():
+                    for key, value in s.items():
                         new_content += f"{key}: {value}.\n"
                     new_content += "\n"
 
@@ -308,7 +308,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
             metadata={
                 "type": "athlete_subtask_summary",
                 "user_id": str(subtask["athleteId"]),
-                "organization_id": str(subtasks["organizationId"]),
+                "organization_id": str(subtask["organizationId"]),
             }
         )
     return doc
