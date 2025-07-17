@@ -50,4 +50,4 @@ USERS_IGNORE_FIELDS = ["_id", "organizationId", "userType", "createdAt", "update
 USERIDENTITIES_IGNORE_FIELDS = ["__v", "userId", "_id"]
 CAMPAIGNS_IGNORE_FIELDS = ["_id", "organizationId", "contractId", "createdAt", "updatedAt", "__v"]
 TASKS_IGNORE_FIELDS = ["campaignId", "organizationId", "adminId", "createdAt", "updatedAt", "__v"]
-SUBTASKS_IGNORE_FIELDS = ["_id", "organizationId", "mainTaskId", "athleteId", "createdAt", "updatedAt", "__v"]
+SUBTASKS_IGNORE_FIELDS = ["_id", "organizationId", "athleteId", "createdAt", "updatedAt", "__v"]

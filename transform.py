@@ -236,7 +236,7 @@ def get_athlete_subtask_document(user):
     if subtasks:
         content = ""
         for subtask in subtasks:
-            content += "Subtask:"
+            content += "* Subtask:"
             for key, value in subtask.items():
                 if key not in settings.SUBTASKS_IGNORE_FIELDS:
                     content += f"\n{key}: {value}."
@@ -257,6 +257,7 @@ def get_athlete_subtask_document(user):
 def get_updated_subtask_document(subtask, insert: bool = False):
     field_name = None
     value = None
+    doc = None
 
     if "athleteId" in subtask:
         field_name = "user_id"
@@ -272,7 +273,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
 
         if insert:
             new_content += old_document.page_content
-            new_content += "Subtask: \n"
+            new_content += "* Subtask: \n"
             for key, value in subtask.items():
                 if key not in ["_id", "createdAt", "updatedAt", "__v"]:
                     new_content += f"{key}: {value}.\n"
@@ -281,7 +282,7 @@ def get_updated_subtask_document(subtask, insert: bool = False):
             subtasks = get_subtasks_by_user_id(subtask["athleteId"])
             if subtasks:
                 for subtask in subtasks:
-                    new_content += "Subtask: \n"
+                    new_content += "* Subtask: \n"
                     for key, value in subtask.items():
                         new_content += f"{key}: {value}.\n"
                     new_content += "\n"
@@ -294,9 +295,23 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                 "organization_id": str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]
             }
         )
-        return doc
-    # If no doc is found, the user has no previous subtasks
-    return None
+    else:
+        # If no doc is found, the user has no previous subtasks. We create a new one
+        content = "* Subtask:"
+        for key, value in subtask.items():
+            if key not in settings.SUBTASKS_IGNORE_FIELDS:
+                content += f"\n{key}: {value}."
+        content += "\n\n"
+
+        doc = Document(
+            page_content=content,
+            metadata={
+                "type": "athlete_subtask_summary",
+                "user_id": str(subtask["athleteId"]),
+                "organization_id": str(subtasks["organizationId"]),
+            }
+        )
+    return doc
 
 def get_updated_subtask_organization_document(user_id):
     old_document = get_existing_athlete_subtask_document_by_field("user_id", user_id)

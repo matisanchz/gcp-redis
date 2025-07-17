@@ -41,7 +41,7 @@ def process_change(collection, operation_type, _id, document, updatedFields, rem
             return update_task_document(document, updatedFields)
         elif collection == 'subtasks':
             logger.info("Subtask UPDATE event detected")
-            return update_subtask_document(document)
+            return update_subtask_document(document, updatedFields)
         elif collection == 'organizations':
             logger.info("Organization UPDATE event detected")
             return update_organization_event(_id, updatedFields, removedFields)
@@ -156,7 +156,7 @@ def update_subtask_document(subtask, updatedFields):
     insert_athlete_subtask_documents([doc])
 
     # If the athleteId was modified, we must restore 2 documents
-    if "athleteId" in updatedFields:
+    if updatedFields and "athleteId" in updatedFields:
         logger.info(f"Processing UPDATE subtask for user: {str(updatedFields['athleteId'])}")
         doc = get_updated_subtask_document(updatedFields, False)
         delete_subtask_document(str(updatedFields['athleteId']))
@@ -164,7 +164,7 @@ def update_subtask_document(subtask, updatedFields):
 
 def delete_subtask_document(subtask):
     logger.info(f"Processing DELETE subtask for user: {str(subtask['athleteId'])}")
-    update_subtask_document(subtask)
+    update_subtask_document(subtask, None)
 
 # <----------------- ORGANIZATIONS ---------------------->
 def update_organization_event(_id, updatedFields, removedFields):
