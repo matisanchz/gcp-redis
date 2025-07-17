@@ -50,6 +50,7 @@ def process_change(collection, operation_type, _id, document, updatedFields, rem
     elif operation_type == "delete":
         if collection == 'users':
             logger.info("User DELETE event detected")
+            delete_athlete_subtask_document(_id)
             return delete_user_document(_id)
         elif collection == 'useridentities':
             logger.info("Useridentities DELETE event detected")
