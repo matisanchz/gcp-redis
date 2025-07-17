@@ -279,12 +279,12 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                     new_content += f"{key}: {value}.\n"
             new_content += "\n"
         else:
-            print("ENTRO REY")
             subtasks = get_subtasks_by_user_id(subtask["athleteId"])
             print(f"PASO REY -> {subtasks}")
             if subtasks:
                 print("ENTRO 2")
                 for s in subtasks:
+                    print("ENTRO 2,4")
                     new_content += "* Subtask: \n"
                     for key, value in s.items():
                         if key not in settings.SUBTASKS_IGNORE_FIELDS:
@@ -292,9 +292,9 @@ def get_updated_subtask_document(subtask, insert: bool = False):
                     new_content += "\n"
                 print(f"ENTRO 3 -> {new_content}")
 
-        print(f"type -> {old_document.metadata["type"]}")
-        print(f"user_id -> {str(subtask["athleteId"]) if "athleteId" in subtask else old_document.metadata["user_id"]}")
-        print(f"organization_id -> {str(subtask["organizationId"]) if "organizationId" in subtask else old_document.metadata["organizationId"]}")
+        print(f"type -> {old_document.metadata['type']}")
+        print(f"user_id -> {str(subtask['athleteId']) if 'athleteId' in subtask else old_document.metadata['user_id']}")
+        print(f"organization_id -> {str(subtask['organizationId']) if 'organizationId' in subtask else old_document.metadata['organizationId']}")
 
         doc = Document(
             page_content=new_content,
