@@ -33,8 +33,8 @@ A feature that processes all Mongo Change Streams event detected in order to mai
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/JabaAI/gcp-redis.git
-cd gcp-redis
+git clone https://github.com/JabaAI/jaba-redis-etl.git
+cd jaba-redis-etl
 ```
 
 2. Create and activate a virtual environment:
@@ -94,5 +94,5 @@ The service is configured to deploy automatically using Google Cloud Build. The 
 3. Deploys the Cloud Function with the following configuration:
    - Runtime: Python 3.10
    - Memory: 1GB
-   - Timeout: 120 seconds
+   - Timeout: 3600 seconds
    - Region: us-central1
